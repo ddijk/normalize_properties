@@ -31,11 +31,23 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
-    str_arg = args.str
+    line = args.positional
 
-    print(f'str_arg = "{str_arg}"')
+#    print(f'line = "{str_arg}"')
+    
+    print(f'input is {line}')
+    matches=re.findall(r'(\${.+})',line) 
+    print(matches)
 
+    matches2=replaceDollar(matches[0])
+  
+    print('output:'+re.sub(matches2, 'aap',line))
+    
+def replaceDollar(input):
+    return ''.join(['\\$' if n=='$' else n for n in input])
 
+def test_dollar():
+    assert 'a\\$b' == replaceDollar('a$b')
 # --------------------------------------------------
 if __name__ == '__main__':
     main()
