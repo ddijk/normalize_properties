@@ -36,17 +36,15 @@ def main():
     args = get_args()
     bestand = args.file
 
+    print(normalizeAll(bestand))
+
+def normalizeAll(propertiesFile):
     dict = {}
-    for regel in bestand:
+    for regel in propertiesFile:
         k, v = regel.strip().split('=')
         dict[k]=v
 
-    # print(dict)
-
-    result = normalize(dict)
-
-    print(result)
-
+    return normalize(dict)
 
 def normalize(dict):
     # print("---- start normalize")
