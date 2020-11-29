@@ -2,7 +2,7 @@
 """
 Author : dickdijk <dickdijk@localhost>
 Date   : 2020-11-28
-Purpose: Rock the Casbah
+Purpose: Normalize properties file with parameters of type ${my_param}
 """
 
 import argparse
@@ -17,7 +17,6 @@ def get_args():
     """Get command-line arguments"""
 
     parser = argparse.ArgumentParser(
-        description='Rock the Casbah',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('-f',
@@ -38,45 +37,39 @@ def main():
 
     print(normalizeAll(bestand))
 
+
 def normalizeAll(propertiesFile):
     dict = {}
     for regel in propertiesFile:
         k, v = regel.strip().split('=')
-        dict[k]=v
+        dict[k] = v
 
     return normalize(dict)
 
+
 def normalize(dict):
-    # print("---- start normalize")
     result = copy.deepcopy(dict)
     for k in dict:
-        result[k]=replace(dict[k], dict)
+        result[k] = replace(dict[k], dict)
 
-        # print(f'key={k} en val={v}')
-    # print(dict) 
-    # print(result) 
-    # print('-----')
-    if result==dict:
+    if result == dict:
         return result
     else:
         return normalize(result)
-    # print("---- end normalize")
 
-def replace(value, dict):    
-    pattern =re.compile(r'\${(.+?)}')
-    match=re.search(pattern, value) 
-    # print(match)
+
+def replace(value, dict):
+    pattern = re.compile(r'\${(.+?)}')
+    match = re.search(pattern, value)
     if match:
-        # print(f'match op {match.group(0)}')
-        # print(f'var is {match.group(1)}')
-        replacee=escape_dollar(match.group(0))
-        return re.sub(replacee, dict[match.group(1)],value)
+        replacee = escape_dollar(match.group(0))
+        return re.sub(replacee, dict[match.group(1)], value)
     else:
         return value
-    
-def escape_dollar(input):
-    return ''.join(['\\$' if n=='$' else n for n in input])
 
+
+def escape_dollar(input):
+    return ''.join(['\\$' if n == '$' else n for n in input])
 
 
 # --------------------------------------------------
