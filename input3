@@ -1,0 +1,5 @@
+host=localhost
+url=${host}:${port}
+port=9000
+user=aap
+home=/home/${user}

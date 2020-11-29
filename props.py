@@ -45,7 +45,6 @@ def main():
 
     result = normalize(dict)
 
-   
     print(result)
 
 
@@ -72,16 +71,15 @@ def replace(value, dict):
     if match:
         # print(f'match op {match.group(0)}')
         # print(f'var is {match.group(1)}')
-        replacee=escapeDollar(match.group(0))
+        replacee=escape_dollar(match.group(0))
         return re.sub(replacee, dict[match.group(1)],value)
     else:
         return value
     
-def escapeDollar(input):
+def escape_dollar(input):
     return ''.join(['\\$' if n=='$' else n for n in input])
 
-def test_dollar():
-    assert 'a\\$b' == escapeDollar('a$b')
+
 
 # --------------------------------------------------
 if __name__ == '__main__':

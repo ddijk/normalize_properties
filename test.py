@@ -5,6 +5,7 @@ import random
 from subprocess import getoutput
 import copy
 import json
+from props import escape_dollar
 
 prg = './props.py'
 
@@ -42,6 +43,9 @@ def test_deepcopy():
     print(d1)
     print(d2)
     assert d1 != d2
+
+def test_dollar():
+    assert 'a\\$b' == escape_dollar('a$b')
 
 def convertQuotes(c):
     if c == '"':
