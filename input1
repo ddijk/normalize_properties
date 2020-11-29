@@ -1,0 +1,3 @@
+key=val
+key2=${key}
+key3=${key2}

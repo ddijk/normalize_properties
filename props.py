@@ -8,6 +8,8 @@ Purpose: Rock the Casbah
 import argparse
 
 import re
+import os
+import copy
 
 
 # --------------------------------------------------
@@ -18,36 +20,69 @@ def get_args():
         description='Rock the Casbah',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument('positional',
-                        metavar='str',
-                        help='A positional argument')
-
-
+    parser.add_argument('-f',
+                        '--file',
+                        help='A readable file',
+                        metavar='FILE',
+                        type=argparse.FileType('rt'),
+                        default=None)
     return parser.parse_args()
 
 
 # --------------------------------------------------
 def main():
-    """Make a jazz noise here"""
+    """Normalize Properties file """
 
     args = get_args()
-    line = args.positional
+    bestand = args.file
 
-#    print(f'line = "{str_arg}"')
-    
-    print(f'input is {line}')
-    matches=re.findall(r'(\${.+})',line) 
-    print(matches)
+    dict = {}
+    for regel in bestand:
+        k, v = regel.strip().split('=')
+        dict[k]=v
 
-    matches2=replaceDollar(matches[0])
-  
-    print('output:'+re.sub(matches2, 'aap',line))
+    # print(dict)
+
+    result = normalize(dict)
+
+   
+    print(result)
+
+
+def normalize(dict):
+    # print("---- start normalize")
+    result = copy.deepcopy(dict)
+    for k in dict:
+        result[k]=replace(dict[k], dict)
+
+        # print(f'key={k} en val={v}')
+    # print(dict) 
+    # print(result) 
+    # print('-----')
+    if result==dict:
+        return result
+    else:
+        return normalize(result)
+    # print("---- end normalize")
+
+def replace(value, dict):    
+    pattern =re.compile(r'\${(.+?)}')
+    match=re.search(pattern, value) 
+    # print(match)
+    if match:
+        # print(f'match op {match.group(0)}')
+        # print(f'var is {match.group(1)}')
+        replacee=escapeDollar(match.group(0))
+        return re.sub(replacee, dict[match.group(1)],value)
+    else:
+        return value
     
-def replaceDollar(input):
+def escapeDollar(input):
     return ''.join(['\\$' if n=='$' else n for n in input])
 
 def test_dollar():
-    assert 'a\\$b' == replaceDollar('a$b')
+    assert 'a\\$b' == escapeDollar('a$b')
+
 # --------------------------------------------------
 if __name__ == '__main__':
     main()
