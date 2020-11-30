@@ -39,6 +39,8 @@ def main():
 def normalizeFile(propertiesFile):
     properties = {}
     for regel in propertiesFile:
+        if regel[0]=='#' or len(regel.split('='))==1: 
+            continue
         k, v = regel.strip().split('=')
         properties[k] = v
 

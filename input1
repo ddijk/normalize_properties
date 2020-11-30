@@ -1,3 +1,5 @@
 key=val
+# comment
 key2=${key}
+
 key3=${key2}
