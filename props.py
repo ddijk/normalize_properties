@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 """
-Author : dickdijk <dickdijk@localhost>
-Date   : 2020-11-28
 Purpose: Normalize properties file with parameters of type ${my_param}
 """
 
@@ -35,24 +33,24 @@ def main():
     args = get_args()
     bestand = args.file
 
-    print(normalizeAll(bestand))
+    print(normalizeFile(bestand))
 
 
-def normalizeAll(propertiesFile):
-    dict = {}
+def normalizeFile(propertiesFile):
+    properties = {}
     for regel in propertiesFile:
         k, v = regel.strip().split('=')
-        dict[k] = v
+        properties[k] = v
 
-    return normalize(dict)
+    return normalize(properties)
 
 
-def normalize(dict):
-    result = copy.deepcopy(dict)
-    for k in dict:
-        result[k] = replace(dict[k], dict)
+def normalize(properties):
+    result = copy.deepcopy(properties)
+    for k in properties:
+        result[k] = replace(properties[k], properties)
 
-    if result == dict:
+    if result == properties:
         return result
     else:
         return normalize(result)
