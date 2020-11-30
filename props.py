@@ -50,10 +50,7 @@ def normalize(properties):
     for k in properties:
         result[k] = replace(properties[k], properties)
 
-    if result == properties:
-        return result
-    else:
-        return normalize(result)
+    return result if result == properties else normalize(result)
 
 
 def replace(value, dict):
