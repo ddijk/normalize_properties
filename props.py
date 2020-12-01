@@ -35,14 +35,13 @@ def main():
 
     print(normalizeFile(bestand))
 
+def is_valid_property(line):
+    return not line.startswith('#') and line.find('=') != -1
 
 def normalizeFile(propertiesFile):
     properties = {}
-    for regel in propertiesFile:
-        property = regel.strip().split('=') 
-        if regel.startswith('#') or len(property)==1:
-            continue
-        k, v = property
+    for regel in filter(is_valid_property, map(str.strip, propertiesFile)):
+        k, v = regel.split('=')
         properties[k] = v
 
     return normalize(properties)
